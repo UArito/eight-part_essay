@@ -7,13 +7,13 @@ import java.util.concurrent.CountDownLatch;
 
 public class CountDownLatchDemo {
 
-    public static class searchTask implements Runnable{
+    static class SearchTask implements Runnable{
         private Integer id;
-        private CountDownLatch countDownLatch;
+        private CountDownLatch latch;
 
-        public searchTask(Integer id, CountDownLatch countDownLatch) {
+        public SearchTask(Integer id, CountDownLatch countDownLatch) {
             this.id = id;
-            this.countDownLatch = countDownLatch;
+            this.latch = countDownLatch;
         }
 
         Random random = new Random();
@@ -27,8 +27,8 @@ public class CountDownLatchDemo {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("花了"+i+"秒早到了"+id+"号龙珠");
-            countDownLatch.countDown();
+            System.out.println("花了"+i+"秒找到了"+id+"号龙珠");
+            latch.countDown();
         }
     }
 
@@ -36,7 +36,7 @@ public class CountDownLatchDemo {
         List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
         CountDownLatch countDownLatch = new CountDownLatch(integers.size());
         for (Integer id: integers){
-            Thread thread = new Thread(new searchTask(id,countDownLatch));
+            Thread thread = new Thread(new SearchTask(id,countDownLatch));
             thread.start();
         }
         try {
